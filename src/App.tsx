@@ -5,7 +5,7 @@ import BookmarksPage from './pages/BookmarksPage';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/quran-web">
       <Routes>
         <Route path="/" element={<IndexPage />} />
         <Route path="/surah/:number" element={<SurahPage />} />
