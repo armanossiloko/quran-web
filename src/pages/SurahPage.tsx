@@ -213,7 +213,7 @@ function SurahPage() {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="container mx-auto px-4 py-8 max-w-5xl">
         <div className="mb-6">
           <Link to="/" className="text-blue-400 hover:text-blue-300 mb-4 inline-block">
             ← Back to Index
