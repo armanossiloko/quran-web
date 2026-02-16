@@ -21,7 +21,7 @@ function SurahPage() {
     { value: 'bosnian', label: 'Bosnian' },
     { value: 'english', label: 'English' },
     { value: 'german', label: 'German' },
-    { value: 'arabic', label: 'Arabic' },
+    // { value: 'arabic', label: 'Arabic' },
   ];
 
   useEffect(() => {
@@ -178,12 +178,17 @@ function SurahPage() {
   const previousSurah = currentIndex > 0 ? allSurahs[currentIndex - 1] : null;
   const nextSurah = currentIndex < allSurahs.length - 1 ? allSurahs[currentIndex + 1] : null;
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const NavigationButtons = () => (
     <div className="flex justify-between items-center mb-6">
       {previousSurah ? (
         <Link
           to={`/surah/${previousSurah.number}`}
-          className="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg transition-colors"
+          onClick={scrollToTop}
+          className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded transition-colors"
         >
           ← Previous: {previousSurah.name}
         </Link>
@@ -193,7 +198,8 @@ function SurahPage() {
       {nextSurah ? (
         <Link
           to={`/surah/${nextSurah.number}`}
-          className="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg transition-colors"
+          onClick={scrollToTop}
+          className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded transition-colors"
         >
           Next: {nextSurah.name} →
         </Link>
@@ -205,32 +211,53 @@ function SurahPage() {
 
   if (!surah) {
     return (
-      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
-        <div>Loading...</div>
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent mb-4"></div>
+          <p className="text-xl text-gray-300">Loading...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <div className="container mx-auto px-4 py-8 max-w-5xl">
-        <div className="mb-6">
-          <Link to="/" className="text-blue-400 hover:text-blue-300 mb-4 inline-block">
-            ← Back to Index
+    <div className="min-h-screen bg-gray-900">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 max-w-6xl">
+        {/* Header */}
+        <div className="mb-8">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 mb-6 transition-colors text-lg"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back to Index
           </Link>
-          <h1 className="text-4xl font-bold mb-2">{surah.name}</h1>
-          <p className="text-gray-400">Surah {surah.number} • {surah.verses.length} ayahs</p>
+          <div className="mb-6">
+            <h1 className="text-4xl sm:text-5xl font-bold mb-3 text-white">
+              {surah.name}
+            </h1>
+            <p className="text-xl sm:text-2xl text-gray-400 flex items-center gap-3">
+              <span className="inline-flex items-center gap-2 bg-blue-500/10 px-4 py-1.5 rounded-full border border-blue-500/30">
+                <span className="text-blue-400 font-semibold">Surah {surah.number}</span>
+              </span>
+              <span className="text-gray-500">•</span>
+              <span>{surah.verses.length} Ayahs</span>
+            </p>
+          </div>
         </div>
 
         <NavigationButtons />
 
-        <div className="mb-6 bg-gray-800 p-4 rounded-lg">
-          <h3 className="text-lg font-semibold mb-3">Select Languages:</h3>
+        {/* Language Selector */}
+        <div className="mb-8 bg-gray-800 p-6 sm:p-8 rounded-lg border border-gray-700">
+          <h3 className="text-xl font-semibold mb-4 text-white">Select Languages</h3>
           <div className="flex flex-wrap gap-3">
             {languages.map((lang) => (
               <label
                 key={lang.value}
-                className="flex items-center cursor-pointer"
+                className="flex items-center cursor-pointer text-white"
               >
                 <input
                   type="checkbox"
@@ -238,13 +265,14 @@ function SurahPage() {
                   onChange={() => handleLanguageToggle(lang.value)}
                   className="w-4 h-4 mr-2"
                 />
-                <span>{lang.label}</span>
+                <span className="text-base">{lang.label}</span>
               </label>
             ))}
           </div>
         </div>
 
-        <div className="space-y-6">
+        {/* Verses */}
+        <div className="space-y-7">
           {surah.verses.map((verse) => {
             const isVerseBookmarked = isBookmarked(verse.number);
             const showInput = showBookmarkInput[verse.number];
@@ -257,31 +285,31 @@ function SurahPage() {
                   verseRefs.current[verse.number] = el;
                 }}
                 onClick={() => handleVerseClick(verse.number)}
-                className={`bg-gray-800 p-6 rounded-lg border transition-all relative cursor-pointer ${
+                className={`bg-gray-800 p-7 sm:p-8 rounded-lg border transition-colors relative cursor-pointer ${
                   activeVerse === verse.number
-                    ? 'border-green-500 border-2 ring-2 ring-green-500/20'
-                    : isProgressSaved(verse.number) 
-                    ? 'border-blue-500 border-2' 
-                    : 'border-gray-700 hover:border-gray-600'
+                    ? 'border-green-500'
+                    : isProgressSaved(verse.number)
+                    ? 'border-blue-500'
+                    : 'border-gray-700'
                 }`}
               >
-                <div className="flex items-start justify-between mb-4">
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-6 gap-4">
                   <div className="flex items-center gap-3">
-                    <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm">
+                    <span className="bg-blue-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg">
                       {verse.number}
                     </span>
-                    <span className="text-gray-400 text-sm">Ayah {verse.number}</span>
+                    <span className="text-gray-400 text-base">Ayah {verse.number}</span>
                     {isProgressSaved(verse.number) && (
-                      <span className="text-blue-400 text-xs">✓ Saved</span>
+                      <span className="text-blue-400 text-sm">✓ Saved</span>
                     )}
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         handleSaveProgress(verse.number);
                       }}
-                      className={`px-3 py-1 rounded text-sm transition-colors ${
+                      className={`px-4 py-2 rounded text-sm font-medium transition-colors text-white ${
                         isProgressSaved(verse.number)
                           ? 'bg-blue-600 hover:bg-blue-700'
                           : 'bg-gray-700 hover:bg-gray-600'
@@ -303,9 +331,9 @@ function SurahPage() {
                           }
                         }
                       }}
-                      className={`px-3 py-1 rounded text-sm transition-colors ${
+                      className={`px-4 py-2 rounded text-sm font-medium transition-colors text-white ${
                         isVerseBookmarked
-                          ? 'bg-yellow-600 hover:bg-yellow-700'
+                          ? 'bg-amber-600 hover:bg-amber-700'
                           : 'bg-gray-700 hover:bg-gray-600'
                       }`}
                     >
@@ -315,7 +343,7 @@ function SurahPage() {
                 </div>
 
                 {showInput && !isVerseBookmarked && (
-                  <div className="mb-4 p-3 bg-gray-700 rounded">
+                  <div className="mb-6 p-5 bg-gray-900 rounded-lg border border-gray-700">
                     <input
                       type="text"
                       placeholder="Add a note (optional)"
@@ -323,7 +351,7 @@ function SurahPage() {
                       onChange={(e) =>
                         setBookmarkNote(prev => ({ ...prev, [verse.number]: e.target.value }))
                       }
-                      className="w-full bg-gray-600 text-white px-3 py-2 rounded mb-2"
+                      className="w-full bg-gray-800 text-white text-base px-5 py-3 rounded-lg mb-3 border border-gray-600 focus:border-blue-500 focus:outline-none"
                       onClick={(e) => e.stopPropagation()}
                     />
                     <div className="flex gap-2">
@@ -332,7 +360,7 @@ function SurahPage() {
                           e.stopPropagation();
                           handleBookmark(verse.number);
                         }}
-                        className="bg-blue-600 hover:bg-blue-700 px-4 py-1 rounded text-sm"
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium transition-colors"
                       >
                         Save
                       </button>
@@ -342,7 +370,7 @@ function SurahPage() {
                           setShowBookmarkInput(prev => ({ ...prev, [verse.number]: false }));
                           setBookmarkNote(prev => ({ ...prev, [verse.number]: '' }));
                         }}
-                        className="bg-gray-600 hover:bg-gray-500 px-4 py-1 rounded text-sm"
+                        className="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded text-sm font-medium transition-colors"
                       >
                         Cancel
                       </button>
@@ -351,41 +379,46 @@ function SurahPage() {
                 )}
 
                 {isVerseBookmarked && bookmarks.find(b => b.surahNumber === surahNumber && b.verseNumber === verse.number)?.note && (
-                  <div className="mb-4 p-3 bg-yellow-900/30 rounded border border-yellow-700">
-                    <p className="text-yellow-200 text-sm">
-                      Note: {bookmarks.find(b => b.surahNumber === surahNumber && b.verseNumber === verse.number)?.note}
-                    </p>
+                  <div className="mb-6 p-5 bg-amber-900/20 rounded-lg border border-amber-700/50">
+                    <div className="flex items-start gap-3">
+                      <svg className="w-5 h-5 text-amber-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                      </svg>
+                      <p className="text-amber-100 text-base leading-relaxed">
+                        {bookmarks.find(b => b.surahNumber === surahNumber && b.verseNumber === verse.number)?.note}
+                      </p>
+                    </div>
                   </div>
                 )}
 
-                <div className="space-y-3">
-                  {selectedLanguages.includes('arabic') && (
-                    <div className="text-2xl text-right leading-relaxed font-arabic">
+                <div className="space-y-5">
+                  {/* {selectedLanguages.includes('arabic') && (
+                    <div className="text-3xl sm:text-4xl text-right leading-loose font-arabic text-gray-100 py-2">
                       {verse.textArabic}
                     </div>
-                  )}
+                  )} */}
                   {selectedLanguages.includes('bosnian') && (
-                    <div className="text-lg leading-relaxed">
+                    <div className="text-lg sm:text-xl leading-relaxed text-gray-200">
                       {selectedLanguages.length > 1 && (
-                        <span className="text-gray-400 text-sm">Bosnian: </span>
+                        <span className="inline-block text-gray-400 text-sm font-semibold uppercase tracking-wide mb-1">Bosnian</span>
                       )}
-                      {verse.textBosnian}
+                      <p className={selectedLanguages.length > 1 ? '' : ''}>{verse.textBosnian}</p>
                     </div>
                   )}
                   {selectedLanguages.includes('english') && (
-                    <div className="text-lg leading-relaxed">
+                    <div className="text-lg sm:text-xl leading-relaxed text-gray-200">
                       {selectedLanguages.length > 1 && (
-                        <span className="text-gray-400 text-sm">English: </span>
+                        <span className="inline-block text-gray-400 text-sm font-semibold uppercase tracking-wide mb-1">English</span>
                       )}
-                      {verse.textEnglish}
+                      <p className={selectedLanguages.length > 1 ? '' : ''}>{verse.textEnglish}</p>
                     </div>
                   )}
                   {selectedLanguages.includes('german') && (
-                    <div className="text-lg leading-relaxed">
+                    <div className="text-lg sm:text-xl leading-relaxed text-gray-200">
                       {selectedLanguages.length > 1 && (
-                        <span className="text-gray-400 text-sm">German: </span>
+                        <span className="inline-block text-gray-400 text-sm font-semibold uppercase tracking-wide mb-1">German</span>
                       )}
-                      {verse.textGerman}
+                      <p className={selectedLanguages.length > 1 ? '' : ''}>{verse.textGerman}</p>
                     </div>
                   )}
                 </div>
@@ -394,7 +427,9 @@ function SurahPage() {
           })}
         </div>
 
-        <NavigationButtons />
+        <div className="mt-10">
+          <NavigationButtons />
+        </div>
       </div>
     </div>
   );
