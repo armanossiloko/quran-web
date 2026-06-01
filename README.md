@@ -44,32 +44,16 @@ npm run build
 
 The built files will be in the `dist` directory.
 
-## Deployment to GitHub Pages
+## Deployment
 
-This project is configured for deployment to GitHub Pages.
+The repo deploys to GitHub Pages automatically on push to `master` via [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml). The build copies `index.html` to `404.html` so deep links and refreshes work on GitHub Pages.
 
-### Prerequisites
+To enable Pages on a fork:
+1. Go to **Settings → Pages**
+2. Set **Source** to **GitHub Actions**
+3. Push to `master` or re-run the deploy workflow
 
-1. Make sure your repository is pushed to GitHub
-2. Ensure you have the correct repository name configured in `vite.config.ts` (the `base` path should match your repository name)
-
-### Deploying
-
-1. Build and deploy to GitHub Pages:
-```bash
-npm run deploy
-```
-
-This will:
-- Build your production-ready app
-- Deploy it to the `gh-pages` branch
-- Make it available at `https://[username].github.io/[repository-name]/`
-
-### Important Notes
-
-- **Repository Name**: If your GitHub repository has a different name than "Quran", update the `base` path in `vite.config.ts` to match your repository name (e.g., if your repo is "my-quran-app", change it to `'/my-quran-app/'`)
-- **GitHub Pages Settings**: After the first deployment, go to your repository Settings → Pages and ensure the source is set to the `gh-pages` branch
-- **Custom Domain**: If you're using a custom domain, set the `base` path in `vite.config.ts` to `'/'` instead
+The production `base` path in `vite.config.ts` is set to `/quran-web/` to match the GitHub repository name. If you fork under a different repo name, update `base` in `vite.config.ts` and the matching `basename` in `src/App.tsx`.
 
 ## Usage
 
