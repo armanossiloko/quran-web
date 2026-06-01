@@ -3,14 +3,64 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
-    <title>Quran App</title>
+    <title>Quran — Read the Quran with Multi-Language Translations</title>
+    <meta name="description" content="Read the Quran in your browser with Bosnian, English, German, and Arabic translations. Bookmark verses, track reading progress, and jump to any ayah with direct links." />
+    <meta name="keywords" content="quran, quran reader, read quran online, islamic, arabic quran, quran translation, quran bookmarks, free quran app" />
+    <meta name="author" content="Arman Ossi Loko" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://armanossiloko.github.io/quran-web/" />
+    <meta name="theme-color" content="#111827" />
+
+    <link rel="icon" href="%BASE_URL%favicon.svg" type="image/svg+xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://armanossiloko.github.io/quran-web/" />
+    <meta property="og:title" content="Quran — Read the Quran with Multi-Language Translations" />
+    <meta property="og:description" content="Read the Quran in your browser with Bosnian, English, German, and Arabic translations. Bookmark verses and continue where you left off." />
+    <meta property="og:image" content="https://armanossiloko.github.io/quran-web/og-image.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Quran — read the Quran with multi-language translations and bookmarks" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content="Quran" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Quran — Read the Quran with Multi-Language Translations" />
+    <meta name="twitter:description" content="Read the Quran in your browser with Bosnian, English, German, and Arabic translations. Bookmark verses and continue where you left off." />
+    <meta name="twitter:image" content="https://armanossiloko.github.io/quran-web/og-image.png" />
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Quran",
+      "url": "https://armanossiloko.github.io/quran-web/",
+      "description": "Read the Quran in your browser with multi-language translations, verse bookmarks, and reading progress tracking.",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Read all 114 surahs",
+        "Multi-language translations (Bosnian, English, German, Arabic)",
+        "Verse bookmarks with notes",
+        "Continue reading progress",
+        "Direct links to any ayah"
+      ]
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet" />
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-
